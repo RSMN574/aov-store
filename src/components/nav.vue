@@ -29,7 +29,7 @@ export default {
       <a class="navbar-item">點數專區</a>
       <a class="navbar-item">英雄專區</a>
       <a class="navbar-item">裝備專區</a>
-
+      <a class="navbar-item">造型專區</a>
     </div>
     <div class="navbar-end">
       <input class="input mr-4" placeholder="搜尋" />

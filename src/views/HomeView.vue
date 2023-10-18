@@ -1,7 +1,7 @@
 <template>
   <NavBar ></NavBar>
   <div>
-    <goods></goods>
+    <goods :commodity="commodity"></goods>
   </div>
 </template>
 
@@ -13,6 +13,16 @@ export default {
   name: 'HomeView',
   components: {
     NavBar,goods
+  },async mounted() {
+   this.$store.dispatch("getGoods","point")
+this.commodity=this.$store.state.cache
+    console.log(this.commodity)
+  },data(){
+    return{
+      commodity:[]
+
+
+    }
   }
 }
 </script>
