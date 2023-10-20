@@ -27,6 +27,9 @@ export default createStore({
         console.log(doc.id, " => ", doc.data());
         commit('SET_cache', doc.data())
       });
+    },
+    signUp( payload,auth){
+
     }
   },
   modules: {

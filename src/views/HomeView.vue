@@ -1,7 +1,7 @@
 <template>
-  <NavBar ></NavBar>
-  <div>
-    <goods :commodity="commodity"></goods>
+  <NavBar class="fixed " ></NavBar>
+  <div class="mt-20">
+    <goods  class="m-4" v-for="( commodity, i) in commodity " :key="i" :commodity="commodity"></goods>
   </div>
 </template>
 
