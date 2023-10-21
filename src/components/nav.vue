@@ -9,6 +9,7 @@ export default {
 
   },
   mounted () {
+
    this.auth=this.$store.state.auth
     if(this.auth==null){
       this.drop=""
@@ -17,12 +18,14 @@ export default {
       this.drop="dropdown"
     }
   },
-  methods:{
-    authCheck(){
-      if(this.auth==null){
-        location.href="#/Auth"
+  methods: {
+    authCheck() {
+      if (this.auth == null) {
+        location.href = "#/Auth"
       }
-    }
+    }, logOut() {
+      this.$store.dispatch("logOut", null)
+    },
   }
 }
 </script>
@@ -51,9 +54,9 @@ export default {
     </label>
 
     <span class="dropdown-menu dropdown-menu-bottom-left">
-      <a class="dropdown-item text-sm">Profile</a>
+
       <a tabindex="-1" class="dropdown-item text-sm">帳號設定</a>
-      <a tabindex="-1" class="dropdown-item text-sm">登出</a>
+      <a tabindex="-1" class="dropdown-item text-sm" @click="logOut">登出</a>
     </span> </span>
 
     <label  class="mr-4 " for="modal-2">

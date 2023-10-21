@@ -9,21 +9,26 @@ export default {
       signEmail:'',
       signPassword:"",
       signPasswordCheck:"",
-      alert:"hidden"
+      alert:"hidden",
+      resetEmail:''
     }
   },
   methods:{
 signIn(){
-
+  this.$store.dispatch("signIn",{email:this.email,
+    password:this.password
+  })
 },signUp(){
      if( this.signPassword=== this.signPasswordCheck){
-       this.$store.dispatch("signIn",{email:this.signEmail,
+       this.$store.dispatch("signUp",{email:this.signEmail,
        password:this.signPassword
        })
        this.alert="hidden"
      }else{
        this.alert="block"
      }
+    },reset(){
+      this.$store.dispatch("resetPassword", this.resetEmail)
     }
 
   }
@@ -95,9 +100,24 @@ signIn(){
             <input type="checkbox" class="checkbox" />
             <a href="#">記住我</a>
           </div>
-          <label class="form-label">
+          <label for="modal-1">
             <a class="link link-underline-hover link-primary text-sm">忘記密碼</a>
           </label>
+
+          <input class="modal-state" id="modal-1" type="checkbox" />
+          <div class="modal">
+            <label class="modal-overlay" for="modal-1"></label>
+            <div class="modal-content flex flex-col gap-5">
+              <label for="modal-1" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</label>
+              <h2 class="text-xl dark:text-white">密碼重置</h2>
+              <input class="input-rounded input" placeholder="電子信箱" v-model="resetEmail" />
+               <div class="flex gap-3">
+
+
+                <button class="btn btn-block btn btn-primary" @click="reset">確認</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="form-field pt-5">
