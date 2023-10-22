@@ -1,10 +1,9 @@
 <script>
-/* eslint-disable */
 import goods from "@/components/goods.vue";
 import NavBar from "@/components/nav.vue";
 
 export default {
-  name: "equip",
+  name: "hero",
   components: {NavBar, goods},
   async mounted() {
     if(/reload/gi.test(location.href)){
@@ -12,9 +11,8 @@ export default {
       location.reload(true);
 
     }
-   // console.log(sessionStorage.getItem("auth"))
     this.$store.dispatch("readStorage")
-    this.$store.dispatch("getGoods","equip")
+    this.$store.dispatch("getGoods","hero")
     this.commodity=this.$store.state.cache
     console.log(this.commodity)
   },data(){
@@ -30,7 +28,8 @@ export default {
 <template>
   <NavBar class="fixed " ></NavBar>
   <div class="mt-20">
-    <goods  class="m-4" v-for="( commodity, i) in commodity " :key="i" :commodity="commodity" ></goods>
+    <p class="dark:text-white text-[#000000]">英雄專區</p>
+    <goods  class="m-4" v-for="( commodity, i) in commodity " :key="i" :commodity="commodity"></goods>
   </div>
 </template>
 

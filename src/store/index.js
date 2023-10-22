@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import { db,collection, getDocs ,getAuth,createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail} from '../firebase'
-
+import { doc, setDoc } from "firebase/firestore";
 export default createStore({
   state: {
 
@@ -60,6 +60,7 @@ console.log( state.auth)
             // Signed in
             commit("SET_auth",userCredential.user)
 
+              sessionStorage.setItem("auth",  JSON.stringify(userCredential.user));
             alert("登入成功")
              // localStorage.setItem('userEmail',userCredential.user.email);
             location.href="#/"
@@ -88,6 +89,17 @@ console.log( state.auth)
                   // ..
               });
 
+      },readStorage({commit}){
+if(sessionStorage.getItem("auth")){
+    console.log(JSON.parse(sessionStorage.getItem("auth")))
+    commit("SET_auth",JSON.parse(sessionStorage.getItem("auth")))
+}
+
+
+      },async addCart(data){
+
+
+          await setDoc(doc(db, "cart", `${data.authId}`), data.goodsId);
       }
   },
   modules: {
