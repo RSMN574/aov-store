@@ -1,8 +1,10 @@
 <script>
+
 import goods from "@/components/goods.vue";
 import NavBar from "@/components/nav.vue";
 
 export default {
+  // eslint-disable-next-line
   name: "hero",
   components: {NavBar, goods},
   async mounted() {
