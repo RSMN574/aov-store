@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import { db,collection, getDocs ,getAuth,createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail} from '../firebase'
-import { doc, setDoc } from "firebase/firestore";
+import {  addDoc  } from "firebase/firestore";
 export default createStore({
   state: {
 
@@ -96,10 +96,8 @@ if(sessionStorage.getItem("auth")){
 }
 
 
-      },async addCart(data){
-
-
-          await setDoc(doc(db, "cart", `${data.authId}`), data.goodsId);
+      },async addCart(payload,d) {
+            await addDoc(collection(db, "cart"), d);
       }
   },
   modules: {

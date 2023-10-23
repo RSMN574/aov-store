@@ -1,14 +1,19 @@
 <script>
+import {  query, where, } from "firebase/firestore";
+import { db,collection, getDocs } from '../firebase'
+
 export default {
   name: "NavBar"
   ,data(){
     return{
       auth:null,
-      drop:"hidden"
+      drop:"hidden",
+      cart:[],
+
     }
 
   },
-  mounted () {
+  async mounted () {
     this.$store.dispatch("readStorage")
    this.auth=this.$store.state.auth
     if(this.auth==null){
@@ -16,6 +21,17 @@ export default {
 
     }else{
       this.drop="dropdown"
+      const q = query(collection(db, "cart"), where("authId.apiKey", "==", this.auth.apiKey));
+
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach((doc) => {
+
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+        this.cart.push(doc.data())
+        console.log(this.cart)
+      });
     }
   },
   methods: {
@@ -29,7 +45,11 @@ export default {
     },reload(r){
       console.log("#/"+r)
       location.href = "#/"+r+"?reload"
-    },
+    },async checkCart(){
+
+
+
+    }
   }
 }
 </script>
@@ -47,18 +67,39 @@ export default {
 
     </ul>
 
-      <label for="drawer-right" class="mr-4"><svg class=" dark:fill-white cursor-pointer" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/></svg>
+      <label for="drawer-right" class="mr-4"  ><svg class=" dark:fill-white cursor-pointer" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/></svg>
     </label>
     <input type="checkbox" id="drawer-right" class="drawer-toggle" />
 
 
     <label class="overlay" for="drawer-right"></label>
-    <div class="drawer drawer-right">
-      <div class="drawer-content pt-10 flex flex-col h-full">
+    <div class="drawer drawer-right ">
+      <div class="drawer-content pt-10 flex flex-col h-full ">
         <label for="drawer-right" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</label>
         <div>
           <h2 class="text-xl font-medium dark:text-white text-[#000000]">購物車</h2>
+          <div class="flex w-full overflow-x-auto">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>商品名稱</th>
+                <th>數量</th>
+                <th>價錢</th>
 
+              </tr>
+              </thead>
+              <tbody>
+              <template v-for="(i) in cart" :key="i">
+              <tr>
+                <th>{{ i.goodsName }}</th>
+                <td><input type="number" id="tentacles" name="tentacles" min="0" max="100" v-model="i.number"/></td>
+                <td>{{i.goodsPrize}}</td>
+
+              </tr>
+              </template>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="h-full flex flex-row justify-end items-end gap-2">
 
@@ -173,9 +214,9 @@ nav.mask-pattern {
   -webkit-mask-repeat: repeat-x, no-repeat;
   -webkit-mask-position: left bottom, top left;
 }
-@media (min-width: 640px) {
+@media (max-width: 640px) {
   nav {
-    padding: 16px 50px 30px 50px;
+    padding: 16px 50px 30px 90px;
   }
 }
 
